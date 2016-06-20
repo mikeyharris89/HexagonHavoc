@@ -1,64 +1,110 @@
-## Hexagon Havoc!
+#Hexagon Havoc!
 
-This is a free-for-all battle to be the last one standing. Up to 2-4 players are able to participate in this game. One of seven colors will be picked at random and the players will have a limited amount of time to make it to the platform with the corresponding color. If they don't make it in time, they are out of the game. The board resets, and this repeats until there is one player remaining.
+[Hexagon Havoc! Live][gitHubPages]
 
-## MVP
-- [ ] A 7-Piece board, that can change to be a single piece board.
-- [ ] A color displays, the game pauses for a determined amount of time, then changes.
-- [ ] Board rests to original position
-- [ ] Ability to have 4 players participate. (maybe use two keyboards?)
-- [ ] Players get removed from the game unless on designated square
-- [ ] Game continues until 1 player remains.
+[gitHubPages]: http://mikeyharris89.github.io/HexagonHavoc
+
+Hexagon Havoc is a 2-4 player JavaScript game inspired by some MarioParty shenanigans.
+Made with Canvas animation, Hexagon Havoc is a free-for-all type game, fun for anyone
+with a competitive and ruthless gameplay style.
+
+![Action Shot](/assets/images/action.png)
+
+## Instructions
+
+On the homepage users are prompted to choose between 2-4 Players. Then using the
+keyboard (I recommend attaching another keyboard if playing with more than 2 players)
+players will find their characters on a board consisting of 7 different-colored hexagons.
+At the top of the page a flag will display a random color, corresponding to one
+of the hexagon platform colors. The players then have a limited time to make it
+to that "safe" platform, before the other platforms race of the screen. If you don't
+make it in time, you are out. Play continues until there is only 1 (or 0) player/players
+remaining.
+
+![Homepage](/assets/images/homepage.png)
+### Controls
+
+* Player1:
+    LEFT: `left arrow`
+    UP: `up arrow`
+    RIGHT: `right arrow`
+    DOWN: `down arrow`
+
+* Player2:
+    LEFT: `a`
+    UP: `w`
+    RIGHT: `d`
+    DOWN: `s`  
+
+* Player3:
+    LEFT: `j`
+    UP: `i`
+    RIGHT: `l`
+    DOWN: `k`  
+
+* Player4:
+    LEFT: `x`
+    UP: `f`
+    RIGHT: `v`
+    DOWN: `c`       
+
+## Languages/APIs
+
+* JavaScript
+* Canvas
+
+## Features and Implementation
+
+Hexagon Havoc is a flexible game that allows the user to choose how many players
+get to participate in the mayhem. Depending on which button is clicked, the game
+gets initialized with a different number, and adds the corresponding players.
 
 
-## Wireframes
+One of the trickiest components of the game was checking to see whether or not a
+player is "safe". When the platforms are in motion there is only one possible space
+a player can exist on and still survive. Instead of checking to see if a
+player was "off" the board, I decided to ensure a player was within either one "flagged"
+platform, or within all of the platforms. I accomplished this using a bit of tricky
+mathematics, evaluating whether a point(corresponding to a player's position) fell
+within a polygon (in this case a hexagonal platform). I found this to be an extremely auspicious solution, as it is so logically sound.
+Theoretically one can draw horizontal rays in one direction from the point, and then
+count the number of times it intersects with the polygon. In this case we are dealing
+with a convex polygon so if the number of times the ray intersects is 1, the point must
+be inside the polygon. If it intersects 0 or 2 times it must be outside, as the ray will
+either completely miss the polygon or will hit more than one side. In my code this
+is slightly modified, and I just check the point is within the range of y point for two vertices
+and check if it intersects. I then toggle the inside value and check every contiguous pair of vertices to test the point against all sides of the polygon.
 
-### First Image
-![home_screen]
+`````JavaScript
 
-### Second Image
-![start_screen]
+Game.prototype.pointInHexagon = function(point, vertices) {
+  var x = point[0], y = point[1];
 
-### Third Image
-![flagged]
+  var inside = false;
+  for (var i = 0, j = vertices.length - 1; i < vertices.length; j = i++) {
+    var xi = vertices[i][0], yi = vertices[i][1];
+    var xj = vertices[j][0], yj = vertices[j][1];
 
-### Four Image
-![end]
+    var intersect = ((yi > y) != (yj > y)) &&
+    (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
 
-[home_screen]: ./wireframes/home_screen.png
-[start_screen]: ./wireframes/start_screen.png
-[flagged]: ./wireframes/flagged.png
-[end]: ./wireframes/end.png
+    if (intersect) {
+      inside = !inside;
+    }
+  }
+  return inside;
+};
 
-## Timeline
+`````
 
-### Phase 1: Board/Platform
-- [ ] Create index.html file to test code
-- [ ] Make Canvas Background
-- [ ] Create MovingPlatform class
-- [ ] Create logic to make platform disappear
-- [ ] All platforms disappear except one
-- [ ] Create Flag class to display random color.
-- [ ] Board changes based on random color flag
-- [ ] Board resets to first position
-- [ ] Game class to hold moving objects/game logic
+## Todo
 
-### Phase 2: Players
+In addition to the features you currently see, I plan on tweaking the game a bit more
+to make it more visually appealing and user friendly.
 
-- [ ] create Player class
-- [ ] Player can move around board
-- [ ] Player can move from platform to platform
-- [ ] Player falls off edge
-- [ ] Game stops once player has died
-- [ ] Allow more then one player on the board
-- [ ] Logic to allow collisions
-- [ ] Some kind of punch to temporarily disable players?
-
-### Phase 3: Styling
-
-- [ ] Finish fleshing out the theme of the game. Election? Olympics?
-- [ ] Flesh out background of Canvas
-- [ ] Animate a way to show board is about to change
-- [ ] Home screen displaying the rules
-- [ ] Ability to chose the number of players
-- [ ] Game over screen
+- [ ] Instruction screen after homepage
+- [ ] Revisit controls to emulate more realistic usability/acceleration
+- [ ] Theme styling
+- [ ] Player collisions
+- [ ] Make players be able to stun other players
+- [ ] Music
