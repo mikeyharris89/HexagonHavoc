@@ -2,3 +2,7 @@
   font-family: 'New Super Mario Font (Mario Party 9)';
   src: url(new-super-mario-font-mario-party-9.ttf) format('ttf');
 }
+
+body {
+  background: blue;
+}
