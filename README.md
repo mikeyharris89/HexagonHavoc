@@ -8,7 +8,7 @@ Hexagon Havoc is a 2-4 player JavaScript game inspired by some MarioParty shenan
 Made with Canvas animation, Hexagon Havoc is a free-for-all type game, fun for anyone
 with a competitive and ruthless gameplay style.
 
-![Action Shot](/assets/images/action.png)
+![Action Shot](/assets/images/Action.png)
 
 ## Instructions
 
@@ -21,7 +21,7 @@ to that "safe" platform, before the other platforms race of the screen. If you d
 make it in time, you are out. Play continues until there is only 1 (or 0) player/players
 remaining.
 
-![Homepage](/assets/images/homepage.png)
+![Homepage](/assets/images/Homepage.png)
 ### Controls
 
 * Player1:
